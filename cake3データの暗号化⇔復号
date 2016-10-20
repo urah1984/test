@@ -1,0 +1,26 @@
+class PostsController extends AppController
+{
+    public function index()
+    {
+    //①keyとsaltを呼び出す　config/schema/bootstrap.php
+    $key = Configure::read('key');
+    $salt = Configure::read('salt');
+    
+    //パスワードの設定
+    $pass = 'password';
+
+    //データの暗号化
+    $pass = Security::decrypt($pass, $key, $salt);
+
+    //getで送信
+    return $this->redirect([
+     'controller' => 'Posts',
+     'action'=>'index',
+     'name' => $name
+    ]);
+    
+    //getされた情報を取得
+    $pass = $this->request->query('pass');
+
+    //復号
+    $pass = Security::decrypt($pass, $key, $salt);
